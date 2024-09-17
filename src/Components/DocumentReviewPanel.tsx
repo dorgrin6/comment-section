@@ -95,7 +95,16 @@ const DocumentReviewPanel: React.FC = () => {
   };
 
   const handleDelete = (id: number): void => {
-    setComments((prevComments) => prevComments.filter((comment) => comment.id !== id));
+    const deleteComment = (comments: CommentType[], id: number): CommentType[] => {
+      return comments
+        .filter(comment => comment.id !== id)
+        .map(comment => ({
+          ...comment,
+          replies: comment.replies ? deleteComment(comment.replies, id) : [],
+        }));
+    };
+
+    setComments(prevComments => deleteComment(prevComments, id));
   };
 
   return (
