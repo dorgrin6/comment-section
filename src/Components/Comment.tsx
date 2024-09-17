@@ -15,9 +15,10 @@ interface CommentProps {
   onVote: (id: number, type: 'up' | 'down') => void;
   onEdit: (id: number, text: string) => void;
   onDelete: (id: number) => void;
+  isTopLevel?: boolean;
 }
 
-const Comment: React.FC<CommentProps> = ({ comment, onReply, onVote, onEdit, onDelete }) => {
+const Comment: React.FC<CommentProps> = ({ comment, onReply, onVote, onEdit, onDelete, isTopLevel = true }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.text);
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -77,9 +78,11 @@ const Comment: React.FC<CommentProps> = ({ comment, onReply, onVote, onEdit, onD
             <IconButton onClick={() => onVote(comment.id, 'down')}>
               <ArrowDownward />
             </IconButton>
-            <IconButton onClick={() => setShowReplyInput(!showReplyInput)}>
-              <Reply />
-            </IconButton>
+            {isTopLevel && (
+              <IconButton onClick={() => setShowReplyInput(!showReplyInput)}>
+                <Reply />
+              </IconButton>
+            )}
             <IconButton onClick={() => setIsEditing(true)}>
               <Edit />
             </IconButton>
@@ -115,6 +118,7 @@ const Comment: React.FC<CommentProps> = ({ comment, onReply, onVote, onEdit, onD
             onVote={onVote}
             onEdit={onEdit}
             onDelete={onDelete}
+            isTopLevel={false}
           />
         ))}
       </CardContent>

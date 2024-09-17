@@ -87,11 +87,21 @@ const DocumentReviewPanel: React.FC = () => {
   };
 
   const handleEdit = (id: number, text: string): void => {
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.id === id ? { ...comment, text } : comment
-      )
-    );
+    const editComment = (comments: CommentType[], id: number, text: string): CommentType[] => {
+      return comments.map(comment => {
+        if (comment.id === id) {
+          return { ...comment, text };
+        } else if (comment.replies) {
+          return {
+            ...comment,
+            replies: editComment(comment.replies, id, text),
+          };
+        }
+        return comment;
+      });
+    };
+
+    setComments(prevComments => editComment(prevComments, id, text));
   };
 
   const handleDelete = (id: number): void => {
@@ -117,6 +127,7 @@ const DocumentReviewPanel: React.FC = () => {
           onVote={handleVote}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          isTopLevel={true}
         />
       ))}
     </div>
