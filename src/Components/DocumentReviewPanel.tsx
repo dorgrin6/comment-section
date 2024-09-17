@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Container, Typography, Box } from '@mui/material';
 import Comment from './Comment';
 
 interface CommentType {
@@ -118,19 +119,24 @@ const DocumentReviewPanel: React.FC = () => {
   };
 
   return (
-    <div>
-      {comments.map((comment) => (
-        <Comment
-          key={comment.id}
-          comment={comment}
-          onReply={handleReply}
-          onVote={handleVote}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          isTopLevel={true}
-        />
-      ))}
-    </div>
+    <Container maxWidth="md">
+      <Typography variant="h4" gutterBottom>
+        Document Review
+      </Typography>
+      <Box>
+        {comments.map((comment) => (
+          <Comment
+            key={comment.id}
+            comment={comment}
+            onReply={handleReply}
+            onVote={handleVote}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isTopLevel={true}
+          />
+        ))}
+      </Box>
+    </Container>
   );
 };
 
